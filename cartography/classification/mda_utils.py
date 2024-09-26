@@ -1,4 +1,5 @@
 
+import os
 from transformers.data.processors.utils import DataProcessor, InputExample
 
 class MDAProcessor(DataProcessor):
@@ -15,7 +16,7 @@ class MDAProcessor(DataProcessor):
 
     def get_train_examples(self, data_dir):
         """See base class."""
-        logger.info(f"LOOKING AT {os.path.join(data_dir, 'train.tsv')}")
+        print(f"LOOKING AT {os.path.join(data_dir, 'train.tsv')}")
         return self._create_examples(self._read_tsv(os.path.join(data_dir, "train.tsv")), "train")
 
     def get_dev_examples(self, data_dir):
@@ -39,6 +40,9 @@ class MDAProcessor(DataProcessor):
             guid = f"{set_type}-{line[0]}"
             text_a = line[1]
             text_b = line[2]
-            label = None if set_type == "test" else line[3]
+            label = None if set_type == "test" else self.get_labels()[int(line[3])]
             examples.append(InputExample(guid=guid, text_a=text_a, text_b=text_b, label=label))
         return examples
+
+    def get_examples(self, data_file, set_type):
+        return self._create_examples(self._read_tsv(data_file), set_type=set_type)

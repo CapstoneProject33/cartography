@@ -34,6 +34,7 @@ glue_processors["mda"] = MDAProcessor
 
 glue_output_modes["snli"] = "classification"
 glue_output_modes["winogrande"] = "classification"
+glue_output_modes["mda"] = "classification"
 
 
 class AdaptedInputFeatures(InputFeatures):
@@ -192,7 +193,7 @@ def adapted_glue_compute_metrics(task_name, preds, labels):
     try:
       return glue_compute_metrics(task_name, preds, labels)
     except KeyError:
-      if task_name in ["snli", "winogrande", "toxic"]:
+      if task_name in ["snli", "winogrande", "toxic", "mda"]:
         # Since MNLI also uses accuracy.
         return glue_compute_metrics("mnli", preds, labels)
     raise KeyError(task_name)
