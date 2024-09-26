@@ -38,6 +38,9 @@ def read_data(file_path: str,
   elif task_name == "QNLI":
     return read_glue_tsv(file_path,
                         guid_index=0)
+  elif task_name == "MDA":
+    return read_glue_tsv(file_path,
+                        guid_index=0)
   else:
     raise NotImplementedError(f"Reader for {task_name} not implemented.")
 
@@ -69,7 +72,7 @@ def copy_dev_test(task_name: str,
   if task_name == "MNLI":
     dev_filename = "dev_matched.tsv"
     test_filename = "dev_mismatched.tsv"
-  elif task_name in ["SNLI", "QNLI", "WINOGRANDE"]:
+  elif task_name in ["SNLI", "QNLI", "MDA", "WINOGRANDE"]:
     dev_filename = f"dev{extension}"
     test_filename = f"test{extension}"
   else:
