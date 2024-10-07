@@ -359,7 +359,7 @@ if __name__ == "__main__":
   parser.add_argument("--task_name",
                       "-t",
                       default="WINOGRANDE",
-                      choices=("SNLI", "MNLI", "QNLI", "WINOGRANDE"),
+                      choices=("SNLI", "MNLI", "QNLI", "WINOGRANDE", "MDA"),
                       help="Which task are we plotting or filtering for.")
   parser.add_argument('--metric',
                       choices=('threshold_closeness',
@@ -394,7 +394,7 @@ if __name__ == "__main__":
   args = parser.parse_args()
 
   training_dynamics = read_training_dynamics(args.model_dir,
-                                             strip_last=True if args.task_name in ["QNLI"] else False,
+                                            #  strip_last=True if args.task_name in ["QNLI"] else False,
                                              burn_out=args.burn_out if args.burn_out < 100 else None)
   total_epochs = len(list(training_dynamics.values())[0]["logits"])
   if args.burn_out > total_epochs:

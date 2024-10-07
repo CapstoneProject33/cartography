@@ -22,6 +22,7 @@ from cartography.classification.mnli_utils import AdaptedMnliMismatchedProcessor
 from cartography.classification.qnli_utils import AdaptedQnliProcessor
 from cartography.classification.snli_utils import SNLIProcessor
 from cartography.classification.winogrande_utils import WinograndeProcessor
+from cartography.classification.mda_utils import MDAProcessor
 
 
 glue_processors["snli"] = SNLIProcessor
@@ -29,9 +30,11 @@ glue_processors["mnli"] = AdaptedMnliProcessor
 glue_processors["mnli-mm"] = AdaptedMnliMismatchedProcessor
 glue_processors["qnli"] = AdaptedQnliProcessor
 glue_processors["winogrande"] = WinograndeProcessor
+glue_processors["mda"] = MDAProcessor
 
 glue_output_modes["snli"] = "classification"
 glue_output_modes["winogrande"] = "classification"
+glue_output_modes["mda"] = "classification"
 
 
 class AdaptedInputFeatures(InputFeatures):
@@ -190,7 +193,7 @@ def adapted_glue_compute_metrics(task_name, preds, labels):
     try:
       return glue_compute_metrics(task_name, preds, labels)
     except KeyError:
-      if task_name in ["snli", "winogrande", "toxic"]:
+      if task_name in ["snli", "winogrande", "toxic", "mda"]:
         # Since MNLI also uses accuracy.
         return glue_compute_metrics("mnli", preds, labels)
     raise KeyError(task_name)
